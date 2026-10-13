@@ -318,71 +318,11 @@ if mode == "📁 Upload image":
 
 
 else:
-    st.markdown("### Live camera inspection")
-    st.caption(
-        "Start the feed to detect and segment defects from your local camera."
-    )
+    st.markdown("### Camera snapshot inspection")
+    st.caption("Take a photo of the surface with your device camera to analyse it.")
 
-    camera_index = st.selectbox("Camera device", [0, 1], index=0)
+    snapshot = st.camera_input("Take a photo of the steel surface")
 
-    if "live_camera_running" not in st.session_state:
-        st.session_state.live_camera_running = False
-
-    if st.session_state.live_camera_running:
-        if st.button("Stop live inspection", type="primary"):
-            st.session_state.live_camera_running = False
-            stream = st.session_state.pop("live_camera", None)
-            if stream is not None:
-                stream.release()
-            st.rerun()
-    else:
-        if st.button("Start live inspection", type="primary"):
-            st.session_state.live_camera_running = True
-            st.rerun()
-
-    if st.session_state.live_camera_running:
-        stream = st.session_state.get("live_camera")
-        if stream is None:
-            stream = CameraStream(camera_index)
-            if not stream.running:
-                st.error(f"Could not open camera {camera_index}.")
-                st.session_state.live_camera_running = False
-                st.stop()
-            st.session_state.live_camera = stream
-
-        left, right = st.columns([3, 1])
-        image_slot = left.empty()
-        count_slot = right.empty()
-        fps_slot = right.empty()
-        size_slot = right.empty()
-
-        fps_smooth = 0.0
-        while st.session_state.live_camera_running:
-            frame = stream.read()
-            if frame is None:
-                time.sleep(0.01)
-                continue
-
-            t0 = time.perf_counter()
-            result = predict_image(
-                model=model,
-                image=frame,
-                image_size=320,
-                confidence=confidence,
-            )
-            annotated = cv2.cvtColor(
-                result.plot(labels=False, conf=False), cv2.COLOR_BGR2RGB
-            )
-            elapsed = time.perf_counter() - t0
-
-            fps_smooth = (
-                1 / elapsed if fps_smooth == 0 else 0.9 * fps_smooth + 0.1 / elapsed
-            )
-            count = len(result.boxes) if result.boxes is not None else 0
-
-            image_slot.image(annotated, output_format="JPEG", use_container_width=True)
-            count_slot.metric("Detected instances", count)
-            fps_slot.metric("Inference speed", f"{fps_smooth:.1f} FPS")
-            size_slot.caption(f"Frame: {frame.shape[1]} × {frame.shape[0]}")
-    else:
-        st.info("Camera is stopped. Start inspection to begin.")
+    if snapshot:
+        image_rgb = np.array(Image.open(snapshot).convert("RGB"))
+        run_inspection(model, image_rgb, image_size, confidence)
