@@ -277,11 +277,20 @@ with st.sidebar:
                else "Model weights missing")
     st.caption("Inference device: CPU")
 
+
+st.sidebar.markdown("---")
+
+st.sidebar.link_button(
+    "Connect with Developer",
+    "https://www.linkedin.com/in/priyanshu-sharma-646233394/",
+    use_container_width=True,
+)
+
 st.markdown("""
 <div class="hero">
     <div class="eyebrow">COMPUTER VISION · INDUSTRIAL AI</div>
     <h1>CrackVision <span style="color:#22d3ee">/</span> Surface Intelligence</h1>
-    <p>Inspect steel surfaces, segment visible defects, and review AI predictions
+    <p>Inspect surfaces, segment visible defects, and review AI predictions
     in one workspace.</p>
 </div>
 """, unsafe_allow_html=True)
