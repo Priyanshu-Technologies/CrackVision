@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Testing and tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# Generated inference and training output
+runs/
+outputs/
+*.log
+
+# Local editor and OS files
+.vscode/
+.DS_Store
+
+# Dataset files are kept locally
+data/
+
+# Temporary UI backup
+app_snapshot_backup.py
+
+# Extracted model internals; retain the standalone .pt weights
+models/crackvision-yolo11n-seg-best/
+models/crackvision-yolo11n-seg-960-best/
+
+
+# Python build artifacts
+build/
+dist/
+pip-wheel-metadata/
+
+# Coverage reports
+.coverage
+htmlcov/
+
+# Docker local overrides
+docker-compose.override.yml
+

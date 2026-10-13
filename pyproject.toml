@@ -1,0 +1,29 @@
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crackvision"
+version = "0.1.0"
+description = "Steel surface crack detection and segmentation"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "opencv-python-headless",
+    "streamlit",
+    "ultralytics",
+    "Pillow",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pandas",
+    "matplotlib",
+    "PyYAML",
+    "ipykernel",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

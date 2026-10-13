@@ -1,0 +1,10 @@
+numpy
+pandas
+matplotlib
+opencv-python-headless
+PyYAML
+ipykernel
+streamlit
+ultralytics
+Pillow
+pytest
